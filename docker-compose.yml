@@ -1,0 +1,56 @@
+version: '3.9'
+
+services:
+  node-app-service:
+    container_name: node-app-container
+    depends_on:
+      - postgresql-database-service
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - POSTGRES_HOST=postgresql-database-container
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=root
+    command: sh -c "npm run dev"
+    ports:
+      - '4000:4000'
+    volumes:
+      - ./src/:/gtfs-app/src/
+      - ./nodemon.json:/gtfs-app/nodemon.json
+      - ./public/:/gtfs-app/public/
+      - ./views/:/gtfs-app/views/
+
+  postgresql-database-service:
+    container_name: postgresql-database-container
+    image: postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=root
+      - POSTGRES_DB=root
+    volumes:
+      - ./sample-data/:/docker-entrypoint-initdb.d/
+      - local_pgdata:/var/lib/postgresql/data
+
+  pgadmin-gui-service:
+    container_name: pgadmin-gui-container
+    image: dpage/pgadmin4
+    restart: always
+    ports:
+      - '8001:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@mail.com
+      PGADMIN_DEFAULT_PASSWORD: root
+      PGADMIN_CONFIG_WTF_CSRF_CHECK_DEFAULT: 'False'
+      PGADMIN_CONFIG_WTF_CSRF_ENABLED: 'False'
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+volumes:
+  local_pgdata:
+  pgadmin-data:

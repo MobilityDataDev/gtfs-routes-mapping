@@ -1,0 +1,31 @@
+doctype html
+html(lang="en")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    title GTFS Stops Map
+    link(rel="stylesheet", href="/leaflet/leaflet.css")
+    link(rel="stylesheet", href="/style.css")
+  body
+    #map
+    script(src="leaflet/leaflet.js")
+    script.
+      var map = L.map('map', { preferCanvas: true }).setView([46.801111, 8.226667], 8);
+
+      L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        maxZoom: 19,
+        attribution:
+          '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
+
+      L.geoJSON(!{routes}, {
+        style: function(route) {
+          return {
+            color: route.properties.color
+          };
+        },
+        onEachFeature: function (route, layer) {
+          const {id, name} = route.properties;
+          return layer.bindPopup(`<h1>${id}</h1><p>${name}</p>`);
+        }
+      }).addTo(map);

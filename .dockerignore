@@ -1,0 +1,10 @@
+.git/
+.gitignore
+.vscode/
+build/
+gtfs.sql
+LICENCE
+node_modules/
+nodemon.json
+public/
+README.md

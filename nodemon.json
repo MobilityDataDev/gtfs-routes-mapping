@@ -1,0 +1,6 @@
+{
+	"verbose": true,
+	"ignore": ["src/**/*.spec.ts"],
+	"watch": ["src/**/*.ts"],
+	"exec": "node --inspect=0.0.0.0:9229 --nolazy -r ts-node/register"
+}

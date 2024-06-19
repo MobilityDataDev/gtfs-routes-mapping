@@ -1,0 +1,15 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+p {
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
+  color: red;
+}
+
+#map {
+  min-height: 100%;
+}
